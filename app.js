@@ -179,7 +179,8 @@ function bindStaticListeners() {
     if (!ticket || ticket.status === status) return;
     ticket.status    = status;
     ticket.updatedAt = new Date().toISOString();
-    if (status === 'done' && !ticket.completedAt) ticket.completedAt = new Date().toISOString();
+    if (status === 'done') { if (!ticket.completedAt) ticket.completedAt = new Date().toISOString(); }
+    else ticket.completedAt = null;
     Storage.save(projectData);
     updateHeader();
     appendSystemMessage(`${id} → ${status}`);
@@ -464,7 +465,8 @@ function mutateTicket(id, newStatus) {
   if (!ticket) return;
   ticket.status = newStatus;
   ticket.updatedAt = new Date().toISOString();
-  if (newStatus === 'done' && !ticket.completedAt) ticket.completedAt = new Date().toISOString();
+  if (newStatus === 'done') { if (!ticket.completedAt) ticket.completedAt = new Date().toISOString(); }
+  else ticket.completedAt = null;
   Storage.save(projectData);
   updateHeader();
   recordMutation(id, newStatus);
@@ -1073,9 +1075,8 @@ function saveTicketEdit() {
   ticket.blockedBy   = get('editor-blocked-by').value.split(',').map(s => s.trim()).filter(Boolean);
   ticket.tags        = get('editor-tags').value.split(',').map(s => s.trim()).filter(Boolean);
   ticket.updatedAt   = new Date().toISOString();
-  if (ticket.status === 'done' && !ticket.completedAt) {
-    ticket.completedAt = new Date().toISOString();
-  }
+  if (ticket.status === 'done') { if (!ticket.completedAt) ticket.completedAt = new Date().toISOString(); }
+  else ticket.completedAt = null;
 
   Storage.save(projectData);
   updateHeader();
