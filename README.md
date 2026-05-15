@@ -4,6 +4,10 @@
 Bring your own API key. No backend. No signup. Runs in your browser.
 
 ```bash
+# From GitHub (no npm publish needed)
+npx github:karimuddin/stowaway
+
+# Or from npm (once published)
 npx stowaway-pm
 ```
 
@@ -39,20 +43,31 @@ Stowaway lets you talk to your project board in plain English. It generates a ka
 | **MCP integration** | Local API on port 3748 exposes your active ticket to Claude Code / Cursor via MCP |
 | **Git branch polling** | Auto-suspends in-progress ticket when you switch branches |
 
-## Setup
+## Installation
 
-### Option A — npx (no install)
+### Option A — directly from GitHub (works right now, no npm account needed)
 ```bash
-npx stowaway-pm
+npx github:karimuddin/stowaway
+```
+npx fetches the latest code from GitHub and runs it. Nothing is left installed.
+
+### Option B — global install from GitHub
+```bash
+npm install -g github:karimuddin/stowaway
+stowaway
 ```
 
-### Option B — global install
+### Option C — from npm (once published)
 ```bash
+# One-off, no install
+npx stowaway-pm
+
+# Or install globally
 npm install -g stowaway-pm
 stowaway
 ```
 
-### Option C — local dev
+### Option D — local dev / fork
 ```bash
 git clone https://github.com/karimuddin/stowaway.git
 cd stowaway
