@@ -23,8 +23,8 @@
   "engines": { "node": ">=18" },
   "keywords": ["project-manager", "ai", "solo-developer", "indie-hacker", "byok", "local-first", "kanban", "llm"],
   "author": "Karim <karimuddin.cs@gmail.com>",
-  "homepage": "https://github.com/stowaway-pm/stowaway",
-  "repository": { "type": "git", "url": "https://github.com/stowaway-pm/stowaway.git" },
-  "bugs": { "url": "https://github.com/stowaway-pm/stowaway/issues" },
+  "homepage": "https://github.com/karimuddin/stowaway",
+  "repository": { "type": "git", "url": "https://github.com/karimuddin/stowaway.git" },
+  "bugs": { "url": "https://github.com/karimuddin/stowaway/issues" },
   "license": "MIT"
 }

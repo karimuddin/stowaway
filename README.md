@@ -54,7 +54,7 @@ stowaway
 
 ### Option C — local dev
 ```bash
-git clone https://github.com/stowaway-pm/stowaway.git
+git clone https://github.com/karimuddin/stowaway.git
 cd stowaway
 node bin/stowaway.js
 ```
