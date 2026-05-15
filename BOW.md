@@ -91,18 +91,34 @@ The core innovation is **Generative UI**: the AI doesn't navigate you to a fixed
 
 ---
 
-## 3. Remaining / Future Work
+## 3. Distribution Status
 
-### V1.2 Ideas
-| Feature | Effort | Notes |
+| Channel | Status | Notes |
 |---|---|---|
-| Request counter reset button in settings | 30 min | UX: currently requires page refresh |
-| Mobile responsive layout | 1 day | Untested on mobile; needs touch DnD |
-| AI-returned milestone mutations applied to `projectData` | 2 hours | Currently only ticket mutations are applied |
-| Import from GitHub Issues / Linear | 1 day | Seed Stowaway from existing project |
-| Background file-watcher time tracking | 1 day | `chokidar` + git diff as proof-of-work |
-| Optional Supabase sync | 2 days | Multi-device without giving us data |
-| Filesystem DB (`~/.stowaway/`) | 1 day | localStorage has 5MB cap |
+| GitHub | ✅ Live | https://github.com/karimuddin/stowaway |
+| GitHub tag | ✅ Pushed | v1.1.0 |
+| GitHub Release | ⏳ Pending | Create at github.com/karimuddin/stowaway/releases/new?tag=v1.1.0 |
+| npm (`stowaway-pm`) | ⏳ Pending | Auth issue — `npm login` in terminal, then `npm publish --access public` |
+| Install (now) | ✅ Works | `npx github:karimuddin/stowaway` |
+| Install (after publish) | ⏳ Pending | `npx stowaway-pm` |
+
+See `NEXT_SESSION.md` for exact steps to complete npm publish and GitHub Release.
+
+---
+
+## 4. Remaining / Future Work (V1.2)
+
+| Priority | Feature | Effort | Notes |
+|---|---|---|---|
+| 1 | npm publish | 5 min | Auth issue only — see NEXT_SESSION.md |
+| 2 | GitHub Release | 5 min | Manual — see NEXT_SESSION.md |
+| 3 | Request counter reset in settings | 30 min | UX: currently requires page refresh |
+| 4 | Mobile responsive layout | 1 day | Untested; needs touch drag & drop |
+| 5 | AI milestone mutations applied | 2 hours | Currently only tickets update from AI response |
+| 6 | Import from GitHub Issues / Linear | 1 day | Seed Stowaway from existing project |
+| 7 | Background file-watcher time tracking | 1 day | `chokidar` + git diff as proof-of-work |
+| 8 | Optional Supabase sync | 2 days | Multi-device without storing user data |
+| 9 | Filesystem DB (`~/.stowaway/`) | 1 day | localStorage has ~5MB cap |
 
 ---
 
