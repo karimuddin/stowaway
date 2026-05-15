@@ -1,0 +1,15 @@
+{
+  "name": "Stowaway",
+  "short_name": "Stowaway",
+  "description": "AI-powered project manager for solo developers",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#6366f1",
+  "orientation": "landscape-primary",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "screenshots": [],
+  "categories": ["productivity", "developer"]
+}
