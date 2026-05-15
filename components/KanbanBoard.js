@@ -1,9 +1,10 @@
-import { createActionButtons, createHeader, el } from './shared.js';
+import { createActionButtons, createHeader, el, daysUntil, dueBadgeClass, dueLabel } from './shared.js';
 
 const COLUMNS = [
   { status: 'in-progress', label: 'In Progress', color: '#6366f1' },
   { status: 'backlog',     label: 'Backlog',      color: '#71717a' },
   { status: 'blocked',     label: 'Blocked',      color: '#ef4444' },
+  { status: 'suspended',   label: 'Suspended',    color: '#f59e0b' },
   { status: 'done',        label: 'Done',         color: '#22c55e' }
 ];
 
@@ -13,10 +14,13 @@ export function KanbanBoard(data, message, actions) {
 
   wrapper.appendChild(createHeader('Board', message));
 
+  const hasSuspended = tickets.some(t => t.status === 'suspended');
   const board = el('div', 'kanban-board');
-  COLUMNS.forEach(col => {
-    board.appendChild(buildColumn(col, tickets.filter(t => t.status === col.status)));
-  });
+  COLUMNS
+    .filter(col => col.status !== 'suspended' || hasSuspended)
+    .forEach(col => {
+      board.appendChild(buildColumn(col, tickets.filter(t => t.status === col.status)));
+    });
   wrapper.appendChild(board);
 
   setupDragAndDrop(board);
@@ -73,6 +77,15 @@ function buildTicketCard(ticket) {
   title.textContent = ticket.title;
 
   card.append(grip, top, title);
+
+  if (ticket.dueDate) {
+    const days = daysUntil(ticket.dueDate);
+    if (days !== null && days <= 14) {
+      const dueBadge = el('span', `ticket-due-badge ${dueBadgeClass(days)}`);
+      dueBadge.textContent = dueLabel(days);
+      card.appendChild(dueBadge);
+    }
+  }
 
   if (ticket.notes) {
     const notes = el('p', 'ticket-notes');

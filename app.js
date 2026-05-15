@@ -244,13 +244,12 @@ async function generateScaffold() {
     { role: 'user',   content: userMsg }
   ];
 
-  let full = '';
   await streamAI({
     provider: SESSION.provider,
     apiKey:   SESSION.apiKey,
     model:    SESSION.model,
     messages,
-    onChunk: chunk => { full += chunk; },
+    onChunk: () => {},
     onDone:  text  => {
       const scaffold = tryParseScaffold(text) || buildDefaultProject(onboardingInfo);
       scaffold.project.id = `proj_${Date.now()}`; // guarantee unique ID
@@ -275,8 +274,9 @@ async function generateScaffold() {
 
 function tryParseScaffold(text) {
   try {
-    const match = text.match(/\{[\s\S]*\}/);
-    const parsed = JSON.parse(match ? match[0] : text);
+    const stripped = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+    const match = stripped.match(/\{[\s\S]*\}/);
+    const parsed = JSON.parse(match ? match[0] : stripped);
     if (parsed.project && Array.isArray(parsed.tickets) && Array.isArray(parsed.milestones)) return parsed;
   } catch {}
   return null;
@@ -303,7 +303,7 @@ function buildDefaultProject({ name, goal, description }) {
 }
 
 function makeTicket(id, title, status, priority, milestoneId, now) {
-  return { id, title, description: '', status, priority, milestoneId, createdAt: now, updatedAt: now, tags: [], blockedBy: [], notes: '', git_branch: null };
+  return { id, title, description: '', status, priority, milestoneId, dueDate: null, createdAt: now, updatedAt: now, tags: [], blockedBy: [], notes: '', git_branch: null };
 }
 
 // ─── Main app ─────────────────────────────────────────────────────────────────
@@ -500,6 +500,7 @@ function applyDataMutations(parsed) {
         status: incoming.status || 'backlog',
         priority: incoming.priority || 'medium',
         milestoneId: incoming.milestoneId || projectData.milestones[0]?.id || '',
+        dueDate: incoming.dueDate || null,
         createdAt: now, updatedAt: now,
         tags: incoming.tags || [], blockedBy: incoming.blockedBy || [],
         notes: incoming.notes || '', git_branch: null
@@ -702,6 +703,14 @@ async function initApiFeatures() {
   // Git branch polling — check every 8s
   await pollGitBranch();
   setInterval(pollGitBranch, 8000);
+
+  // Re-poll immediately when the tab becomes visible again (background heartbeat)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && apiAvailable) {
+      pollGitBranch();
+      pushMcpContext();
+    }
+  });
 
   // Push MCP context whenever active ticket changes
   pushMcpContext();
@@ -948,9 +957,12 @@ function bindKeyboardShortcuts() {
 
     switch (e.key) {
       case '/': e.preventDefault(); get('chat-input')?.focus(); break;
-      case 'b': if (projectData) renderDirect('kanban'); break;
-      case 's': if (projectData) renderDirect('standup'); break;
+      case 'b': if (projectData) renderDirect('kanban');   break;
+      case 's': if (projectData) renderDirect('standup');  break;
       case 'p': if (projectData) renderDirect('progress'); break;
+      case 'v': if (projectData) renderDirect('velocity'); break;
+      case 'd': if (projectData) renderDirect('burndown'); break;
+      case 'e': if (projectData) renderDirect('eod');      break;
       case '?': toggleShortcutsHelp(); break;
     }
   });
@@ -1018,6 +1030,7 @@ function openTicketEditor(ticketId) {
   get('editor-title').value       = ticket.title       || '';
   get('editor-status').value      = ticket.status      || 'backlog';
   get('editor-priority').value    = ticket.priority    || 'medium';
+  get('editor-due-date').value    = ticket.dueDate     || '';
   get('editor-desc').value        = ticket.description || '';
   get('editor-notes').value       = ticket.notes       || '';
   get('editor-blocked-by').value  = (ticket.blockedBy  || []).join(', ');
@@ -1053,6 +1066,7 @@ function saveTicketEdit() {
   ticket.title       = newTitle || ticket.title;
   ticket.status      = get('editor-status').value;
   ticket.priority    = get('editor-priority').value;
+  ticket.dueDate     = get('editor-due-date').value || null;
   ticket.description = get('editor-desc').value.trim();
   ticket.notes       = get('editor-notes').value.trim();
   ticket.milestoneId = get('editor-milestone').value;

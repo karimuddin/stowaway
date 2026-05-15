@@ -126,7 +126,8 @@ function buildLineChart(points, total, ms) {
   const tx = (content, attrs = {}) => { const t = g('text', attrs); t.textContent = content; return t; };
 
   const xScale = (i)  => ML + (i / Math.max(points.length - 1, 1)) * chartW;
-  const yScale = (v)  => MT + (v / total) * chartH;
+  // Invert y: high remaining = top of chart (low SVG y), zero remaining = bottom
+  const yScale = (v)  => MT + chartH - (v / total) * chartH;
 
   // Grid lines + y labels
   [0, 0.25, 0.5, 0.75, 1].forEach(frac => {

@@ -33,8 +33,10 @@ export function createActionButtons(actions) {
 export function daysUntil(dateStr) {
   if (!dateStr) return null;
   try {
-    const due = new Date(dateStr); due.setHours(0,0,0,0);
-    const now = new Date();       now.setHours(0,0,0,0);
+    const due = new Date(dateStr);
+    if (isNaN(due.getTime())) return null;
+    due.setHours(0,0,0,0);
+    const now = new Date(); now.setHours(0,0,0,0);
     return Math.round((due - now) / 86400000);
   } catch { return null; }
 }

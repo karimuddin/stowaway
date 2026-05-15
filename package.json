@@ -1,6 +1,6 @@
 {
   "name": "stowaway-pm",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "AI-powered project manager for solo developers. BYOK, local-first, provider-agnostic.",
   "bin": {
     "stowaway": "./bin/stowaway.js"
@@ -17,10 +17,14 @@
     "manifest.json",
     "sw.js",
     "icon.svg",
+    "cloudflare-proxy.js",
     "README.md"
   ],
   "engines": { "node": ">=18" },
-  "keywords": ["project-manager", "ai", "solo-developer", "indie-hacker", "byok", "local-first"],
+  "keywords": ["project-manager", "ai", "solo-developer", "indie-hacker", "byok", "local-first", "kanban", "llm"],
+  "author": "Karim <karimuddin.cs@gmail.com>",
   "homepage": "https://github.com/stowaway-pm/stowaway",
+  "repository": { "type": "git", "url": "https://github.com/stowaway-pm/stowaway.git" },
+  "bugs": { "url": "https://github.com/stowaway-pm/stowaway/issues" },
   "license": "MIT"
 }

@@ -22,7 +22,7 @@ export const PROVIDERS = {
       'X-Title': 'Stowaway'
     }),
     body: (messages, model) => ({
-      model: model || 'meta-llama/llama-3.3-70b-instruct:free',
+      model: model || 'deepseek/deepseek-v4-flash:free',
       messages,
       stream: true
     }),

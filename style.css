@@ -795,3 +795,19 @@ kbd {
   margin-top: 4px; transition: background 0.15s;
 }
 .modal-save-btn:hover { background: var(--accent-h); }
+
+/* ─── Ticket due date badge (kanban card) ─── */
+.ticket-due-badge {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  padding: 2px 6px; border-radius: 4px; margin-top: 4px;
+  letter-spacing: 0.2px;
+}
+.ticket-due-badge.due-overdue  { background: var(--red-dim);    color: var(--red); }
+.ticket-due-badge.due-critical { background: var(--orange-dim); color: var(--orange); }
+.ticket-due-badge.due-soon     { background: var(--amber-dim);  color: var(--amber); }
+.ticket-due-badge.due-ok       { background: var(--green-dim);  color: var(--green); }
+
+/* ─── Date input in editor ─── */
+input[type="date"].editor-input {
+  color-scheme: dark;
+}
